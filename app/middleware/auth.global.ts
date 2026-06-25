@@ -1,14 +1,20 @@
-// middleware/auth.global.ts
-export default defineNuxtRouteMiddleware((to) => {
-  // Проверяем наличие токена в cookies (синхронно)
-  const token = useCookie('token').value;
-  const isLoggedIn = !!token;
+export default defineNuxtRouteMiddleware(async (to) => {
+  const { user, fetchUser } = useUser();
 
-  // Если пользователь уже авторизован и пытается зайти на логин или регистрацию
+  if (user.value === undefined) {
+    await fetchUser();
+  }
+
+  const isLoggedIn = !!user.value;
+
+  const protectedPaths = ['/profile', '/admin', '/order'];
+  const isProtected = protectedPaths.some(p => to.path === p || to.path.startsWith(p + '/'));
+
+  if (isProtected && !isLoggedIn) {
+    return navigateTo('/login');
+  }
+
   if (isLoggedIn && (to.path === '/login' || to.path === '/register')) {
     return navigateTo('/');
   }
-
-  // Защищённые маршруты уже проверяются на сервере (server/middleware/auth.ts)
-  // Здесь дополнительная проверка не нужна
 });

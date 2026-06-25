@@ -16,7 +16,12 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["@nuxt/eslint", "@nuxt/ui", "@vueuse/nuxt", "@pinia/nuxt"],
+  modules: [
+    "@nuxt/eslint",
+    "@nuxt/ui",
+    "@vueuse/nuxt",
+    "@pinia/nuxt",
+  ],
 
   app: {
     head: {

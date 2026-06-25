@@ -1,6 +1,6 @@
 import { drizzle } from 'drizzle-orm/mysql2';
 import mysql from 'mysql2/promise';
-import { products } from '../db/schema';
+import { products } from '~~/server/db/schema';
 
 export default defineEventHandler(async () => {
   const connection = await mysql.createConnection({
